@@ -184,11 +184,12 @@ def shutdown(template=None, network_manager=None):
             template.remove_extra_files()
 
         print '[' + R + '!' + W + '] Closing'
-        ###MODIFICATIONS####
-        fileRes = open(pathFile, "r")
-        linesFileRes = fileRes.readlines()
-        print "Number of connexions : "+str(len(linesFileRes))
-        ###./MODIFICATIONS####
+        #USELESS whe have the counter
+        # ###MODIFICATIONS####
+        # fileRes = open(pathFile, "r")
+        # linesFileRes = fileRes.readlines()
+        # print "Number of connexions : "+str(len(linesFileRes))
+        # ###./MODIFICATIONS####
         sys.exit(0)
 
 
