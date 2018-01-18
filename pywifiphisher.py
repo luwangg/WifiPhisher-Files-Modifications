@@ -139,7 +139,7 @@ def shutdown(template=None, network_manager=None):
     global max_req
     #Server will stop when counter = max_req
     if counter >= max_req:
-        ###./MODIFICATIONS####
+###./MODIFICATIONS####
         """
         Shutdowns program.
         """
@@ -174,12 +174,6 @@ def shutdown(template=None, network_manager=None):
             template.remove_extra_files()
 
         print '[' + R + '!' + W + '] Closing'
-        #USELESS whe have the counter
-        # ###MODIFICATIONS####
-        # fileRes = open(pathFile, "r")
-        # linesFileRes = fileRes.readlines()
-        # print "Number of connexions : "+str(len(linesFileRes))
-        # ###./MODIFICATIONS####
         sys.exit(0)
 
 
