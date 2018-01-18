@@ -129,42 +129,67 @@ def stopfilter(x):
         return True
     return False
 
+###MODIFICATIONS####
+#Counter for number of form submit
+counter = 0
+#Max submit possible until shutdown
+max_req = 5
 def shutdown(template=None, network_manager=None):
-    """
-    Shutdowns program.
-    """
-    global jamming_daemon_running, sniff_daemon_running
-    jamming_daemon_running = False
-    sniff_daemon_running = False
+    global counter
+    global max_req
+    #We will stock log here
+    pathDir = "/tmp/wifiphisherLog"
+    pathFile = "/tmp/wifiphisherLog/connexions.txt"
+    #Check if dir exist
+    if not os.path.exists(pathDir):
+        os.makedirs(pathDir)
+    file = open(pathFile,"a")
+    #Writing 1 every time form is submit
+    file.write("1\n")
+    file.close()
+    #Server will stop when counter = max_req
+    if counter >= max_req:
+        ###./MODIFICATIONS####
+        """
+        Shutdowns program.
+        """
+        global jamming_daemon_running, sniff_daemon_running
+        jamming_daemon_running = False
+        sniff_daemon_running = False
 
-    os.system('iptables -F')
-    os.system('iptables -X')
-    os.system('iptables -t nat -F')
-    os.system('iptables -t nat -X')
-    os.system('pkill airbase-ng')
-    os.system('pkill dnsmasq')
-    os.system('pkill hostapd')
+        os.system('iptables -F')
+        os.system('iptables -X')
+        os.system('iptables -t nat -F')
+        os.system('iptables -t nat -X')
+        os.system('pkill airbase-ng')
+        os.system('pkill dnsmasq')
+        os.system('pkill hostapd')
 
-    if os.path.isfile('/tmp/wifiphisher-webserver.tmp'):
-        os.remove('/tmp/wifiphisher-webserver.tmp')
-    if os.path.isfile('/tmp/wifiphisher-jammer.tmp'):
-        os.remove('/tmp/wifiphisher-jammer.tmp')
-    if os.path.isfile('/tmp/hostapd.conf'):
-        os.remove('/tmp/hostapd.conf')
+        if os.path.isfile('/tmp/wifiphisher-webserver.tmp'):
+            os.remove('/tmp/wifiphisher-webserver.tmp')
+        if os.path.isfile('/tmp/wifiphisher-jammer.tmp'):
+            os.remove('/tmp/wifiphisher-jammer.tmp')
+        if os.path.isfile('/tmp/hostapd.conf'):
+            os.remove('/tmp/hostapd.conf')
 
-    # Set all the used interfaces to managed (normal) mode and show any errors
-    if network_manager:
-        try:
-            network_manager.reset_ifaces_to_managed()
-        except:
-            print '[' + R + '!' + W + '] Failed to reset interface' 
+        # Set all the used interfaces to managed (normal) mode and show any errors
+        if network_manager:
+            try:
+                network_manager.reset_ifaces_to_managed()
+            except:
+                print '[' + R + '!' + W + '] Failed to reset interface' 
 
-    # Remove any template extra files
-    if template:
-        template.remove_extra_files()
+        # Remove any template extra files
+        if template:
+            template.remove_extra_files()
 
-    print '[' + R + '!' + W + '] Closing'
-    sys.exit(0)
+        print '[' + R + '!' + W + '] Closing'
+        ###MODIFICATIONS####
+        fileRes = open(pathFile, "r")
+        linesFileRes = fileRes.readlines()
+        print "Number of connexions : "+str(len(linesFileRes))
+        ###./MODIFICATIONS####
+        sys.exit(0)
 
 
 def set_fw_rules():
