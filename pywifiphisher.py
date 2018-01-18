@@ -137,16 +137,6 @@ max_req = 5
 def shutdown(template=None, network_manager=None):
     global counter
     global max_req
-    #We will stock log here
-    pathDir = "/tmp/wifiphisherLog"
-    pathFile = "/tmp/wifiphisherLog/connexions.txt"
-    #Check if dir exist
-    if not os.path.exists(pathDir):
-        os.makedirs(pathDir)
-    file = open(pathFile,"a")
-    #Writing 1 every time form is submit
-    file.write("1\n")
-    file.close()
     #Server will stop when counter = max_req
     if counter >= max_req:
         ###./MODIFICATIONS####
